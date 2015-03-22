@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   root 'stores#show'
 
   devise_for :users
+
+  resources :farm_store_order_items
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
