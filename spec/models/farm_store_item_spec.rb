@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe FarmStoreItem, :type => :model do
   let(:i){ build :farm_store_item }
-
+  let(:pricing_key){ i.pricing.first }
+  
   describe 'Validations' do
     it{ should validate_presence_of :name }
     it{ should validate_presence_of :pricing }
@@ -37,5 +38,23 @@ describe FarmStoreItem, :type => :model do
   end #end Attributes
 
   describe 'Methods' do
+    describe 'build_order_item(pricing_key, quantity: 1)' do
+      it 'should return a FarmStoreOrderItem' do
+        i.build_order_item(pricing_key).class.should == FarmStoreOrderItem
+      end
+
+      specify 'return value should be decorated with this FarmStoreItem' do
+        i.build_order_item(pricing_key).item_id.should == i.id
+        i.build_order_item(pricing_key).name.should == i.name
+      end
+
+      specify 'default quantity is one' do
+        i.build_order_item(pricing_key).quantity.should == 1
+      end
+
+      specify 'quantity can be changed with :quantity parameter' do
+        i.build_order_item(pricing_key, :quantity => 100).quantity.should == 100
+      end
+    end
   end
 end

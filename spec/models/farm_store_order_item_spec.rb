@@ -4,29 +4,9 @@ describe FarmStoreOrderItem, :type => :model do
   #there is no db table for this model.
   let(:i){ create :farm_store_item }
   let(:o){ build :farm_store_order }
-
-  let(:order_item) do
-    FarmStoreOrderItem.new(i, i.pricing.keys.first, Random.rand(1..100))
-  end
-
-  before(:each) do
-
-  end
+  let(:order_item){ i.build_order_item(i.pricing.keys.first) }
 
   describe 'Methods' do
-    describe '#new(item, pricing_key, quantity, price: nil)' do
-      it 'should return a new FarmStoreOrderItem' do
-        FarmStoreOrderItem.new(i, i.pricing.keys.first, Random.rand(1..1000)).class.should == FarmStoreOrderItem
-      end
-
-      it 'optionally, a :price parameter can be sent, which sets the price of the unit item, instead of a lookup by the pricing_key' do
-        #done to cement a displayed price, when the model (and thus the item price)
-        oi = FarmStoreOrderItem.new(i, i.pricing.keys.first, 1, price: 1000000) #1,000,000 is out of range of the sample data
-        oi.total.should == 1000000
-      end
-
-    end
-
     describe '#item' do
       it 'returns the item that the FarmStoreOrderItem is derived from' do
         order_item.item.should == i
@@ -47,14 +27,14 @@ describe FarmStoreOrderItem, :type => :model do
       it 'should work with real data' do
         i.pricing['test_price'] = 100
         i.save
-        oi = FarmStoreOrderItem.new(i, 'test_price', 10)
+        oi = i.build_order_item('test_price', :quantity => 10)
         oi.total.should == 1000
       end
 
       it 'should save the price at the moment of creation, and not be linked to the db object item' do
         i.pricing['test'] = 100
         i.save
-        oi = FarmStoreOrderItem.new(i, 'test', 1)
+        oi = i.build_order_item('test')
         i.pricing['test'] = 200
         oi.total.should == 100
       end
@@ -70,12 +50,18 @@ describe FarmStoreOrderItem, :type => :model do
       it 'should work with real numbers' do
         item = FarmStoreItem.new :name => Faker::Commerce.product_name, tax_rate: 10
         item.pricing['test_price'] = 1000
-        item.save
-        order_item = FarmStoreOrderItem.new(item, 'test_price', 2)
-        order_item.total_after_tax.should == 2200
+        # item.save
+        order_item = item.build_order_item 'test_price'
+        order_item.total_after_tax.should == 1100
       end
 
 
     end
-  end
+  end #Methods
+
+  describe 'Class Methods' do
+    describe '#build_from_hash(h)' do
+      #todo
+    end
+  end #Class Methods
 end

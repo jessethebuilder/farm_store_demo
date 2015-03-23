@@ -24,6 +24,12 @@ describe ApplicationController, type: :controller do
       subject.current_order.phase.should == 'open'
     end
 
+    specify 'unless a user logs in or the session changes, #current_order should be the same object' do
+      order = subject.current_order
+      order.should == subject.current_order
+    end
+
+
     context 'User is signed in' do
       login_user
 
@@ -56,6 +62,20 @@ describe ApplicationController, type: :controller do
         order = subject.current_order
         order.should == FarmStoreOrder.find(subject.session[:farm_store_order_id])
       end
+
+      specify 'if an order gets deleted (though the session key doesnt), a new orders is created (and saved),
+               and a new session key is set' do
+        order = subject.current_order
+        order_id = order.id
+        session_key = subject.session[:farm_store_order_id]
+
+        order.destroy
+        subject.current_order.id.should_not == order_id
+        subject.current_order.id.should_not == session_key
+        subject.session[:farm_store_order_id].should == subject.current_order.id
+
+      end
+
     end
   end #current_order
 end

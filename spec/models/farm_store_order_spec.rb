@@ -3,6 +3,8 @@ require 'rails_helper'
 describe FarmStoreOrder, :type => :model do
   let(:o){ build :farm_store_order }
   let(:i){ create :farm_store_item}
+  let(:pricing_key){ i.pricing.keys.first }
+  let(:oi){ i.build_order_item(pricing_key, :quantity => Random.rand(1..1000)) }
   
   describe 'Validations' do
     it{ should validate_presence_of :phase }
@@ -24,24 +26,30 @@ describe FarmStoreOrder, :type => :model do
       it 'should be an array by default' do
         FarmStoreOrder.new.items.should == []
       end
-      
 
-      describe '#billing_address' do
-      #   it 'should return any kind of data you put in it' do
-      #     #the idea here is that an address is stamped into the database at the moment of order completion.
-      #     o.billing_address = 'some data'
-      #     o.billing_address.class.should == String
-      #     o.billing_address = []
-      #     o.billing_address.class.should == Array
-      #   end
+      it 'should return an array of FarmStoreOrderItems' do
+        o.items << oi
+        o.items.first.class.should == FarmStoreOrderItem
       end
-      
-      describe '#shipping_address' do
-        # it 'should be a JSON object' do
-        #   o.shipping_address = 'some data'
-        #   o.shipping_address.class.should == JSON
-        # end
+
+      it "should return an array of FarmStoreOrderItems after it is saved" do
+        o.items << oi
+        o.save
+
+        refetched_order = o.reload
+        refetched_order.items.class == Array
+        refetched_order.items.first.class.should == FarmStoreOrderItem
       end
+
+      it 'should accept and save FarmStoreOrderItems' do
+        o.save
+        order_id = o.id
+        o.items << oi
+        o.items.include?(oi).should == true
+        o.save
+        FarmStoreOrder.find(order_id).items.first.item_id.should == i.id
+      end
+
     end
   end # Attributes
 
@@ -54,8 +62,7 @@ describe FarmStoreOrder, :type => :model do
         item.save
 
         10.times do
-          f = FarmStoreOrderItem.new item, 'test', 1
-          o.items << f
+          o.items << item.build_order_item('test')
         end
       end
 
