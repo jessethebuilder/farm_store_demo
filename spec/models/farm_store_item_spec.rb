@@ -2,15 +2,18 @@ require 'rails_helper'
 
 describe FarmStoreItem, :type => :model do
   let(:i){ build :farm_store_item }
-  let(:pricing_key){ i.pricing.first }
+  let(:pricing_key){ i.pricing.keys.first }
   
   describe 'Validations' do
     it{ should validate_presence_of :name }
     it{ should validate_presence_of :pricing }
+
+    it{ should validate_presence_of :quantity }
+    it{ should validate_numericality_of(:quantity).is_greater_than_or_equal_to(0) }
   end
 
   describe 'Associations' do
-
+    it{ should have_many :farm_store_order_items }
   end
 
   describe 'Attributes' do

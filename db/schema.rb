@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150323234116) do
+ActiveRecord::Schema.define(version: 20150324080440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20150323234116) do
     t.float    "tax_rate"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.float    "quantity"
   end
 
   create_table "farm_store_order_items", force: :cascade do |t|
@@ -86,6 +87,7 @@ ActiveRecord::Schema.define(version: 20150323234116) do
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
     t.integer  "farm_store_item_id"
+    t.string   "quantity_label"
   end
 
   create_table "farm_store_orders", force: :cascade do |t|
@@ -96,6 +98,14 @@ ActiveRecord::Schema.define(version: 20150323234116) do
     t.text     "shipping_address"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+  end
+
+  create_table "farm_store_profiles", force: :cascade do |t|
+    t.float    "standard_tax_rate"
+    t.integer  "has_farm_store_profile_id"
+    t.string   "has_farm_store_profile_type"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "news_stories", force: :cascade do |t|

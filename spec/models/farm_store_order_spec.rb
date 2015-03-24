@@ -58,7 +58,7 @@ describe FarmStoreOrder, :type => :model do
     describe 'Total Methods' do
       before(:each) do
         item = FarmStoreItem.new :name => Faker::Commerce.product_name
-        item.pricing['test'] = 100
+        item.pricing['test'] = {'price' => 100}
         item.tax_rate = 10
         item.save
 

@@ -53,17 +53,10 @@ describe FarmStoreOrderItemsController, type: :controller do
       expect{ xhr :delete, :destroy, {:id => order_item.to_param}, valid_session }.to change{ subject.current_order.farm_store_order_items.count }.by(-1)
     end
 
-    it 'deletes the FarmStoreOrderItem at the item_index specified' do
-      # create a new item and add it to the current_order
-      new_item = create :farm_store_item
-      test_name = new_item.name
-      subject.current_order.farm_store_order_items << new_item.build_order_item('xxx')
-      subject.current_order.save
-
+    it 'assigns the id of the destroyed item to @destroyed_farm_store_order_item_id' do
+      oi_id = order_item.to_param
       xhr :delete, :destroy, {:id => order_item.to_param}, valid_session
-
-      subject.current_order.farm_store_order_items.count.should == 1
-      subject.current_order.farm_store_order_items.first.name.should == test_name
+      assigns(:deleted_farm_store_order_item_id).should == Integer(oi_id)
     end
   end # destroy
 
