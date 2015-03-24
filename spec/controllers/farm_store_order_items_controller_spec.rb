@@ -6,7 +6,7 @@ describe FarmStoreOrderItemsController, type: :controller do
   let(:pricing_key){ farm_store_item.pricing.keys.first }
   let(:order_item){ farm_store_item.build_order_item(pricing_key) }
 
-  let(:valid_attributes){ {:item_id => farm_store_item.id, :pricing_key => pricing_key, :quantity => 1..1000} }
+  let(:valid_attributes){ {:farm_store_item_id => farm_store_item.id, :pricing_key => pricing_key, :quantity => Random.rand(1..1000)} }
   let(:invalid_attributes){ {} }
   let(:valid_session){ {} }
   #
@@ -14,7 +14,7 @@ describe FarmStoreOrderItemsController, type: :controller do
   #   @item = create :farm_store_item
   # end
 
-  describe ':create' do
+  describe 'POST #create' do
     context 'with valid params' do
       it 'creates a current_order if one does not exist' do
         # The FarmStore gem uses Ajax on all order_item requests
@@ -39,6 +39,28 @@ describe FarmStoreOrderItemsController, type: :controller do
 
     context 'without valid params' do
       #parameters for this will be set by the system
+    end
+  end
+
+  describe 'PUT #update' do
+    context 'With Valid Params' do
+      let(:new_item){ build :farm_store_item }
+      let(:new_attributes){ {:item_id => farm_store_item.id, :pricing_key => new_item.pricing.keys.first, :quantity => Random.rand(1..1000)} }
+      let(:oi){ FarmStoreOrderItem.create! valid_attributes }
+
+      before(:each) do
+        xhr :put, :update, {:id => oi.to_param, :farm_store_order_item => new_attributes}, valid_session
+        oi.reload
+      end
+
+      it 'updates the subject' do
+        oi.quantity.should == new_attributes[:quantity]
+      end
+
+      it 'assigns the subject to @farm_store_order_item' do
+        assigns(:farm_store_order_item).should == oi
+      end
+
     end
   end
 

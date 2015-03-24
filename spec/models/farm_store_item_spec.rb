@@ -58,5 +58,43 @@ describe FarmStoreItem, :type => :model do
         i.build_order_item(pricing_key, :quantity => 100).quantity.should == 100
       end
     end
-  end
+
+    describe '#available_pricing_keys' do
+      #This method is used to determine which pricing keys, based on quantity, that this is available for this item
+      it 'should return only the pricing keys for which there is available quantity' do
+        i.pricing = {'unit' => {'price' => 1.0, 'quantity' => 1}, 'dozen' => {'price' => 12.0, 'quantity' => 12}}
+        i.quantity = 10
+        i.available_pricing_keys.include?('unit').should == true
+        i.available_pricing_keys.include?('dozen').should == false
+      end
+     end
+  end # Methods
+
+  describe 'Class Methods' do
+    describe 'Scopes' do
+      describe '#in_stock' do
+        it "should return items that have a quantity greater than 0" do
+          i.quantity = 100
+          expect{ i.save }.to change{ FarmStoreItem.in_stock.count }.by(1)
+        end
+
+        it "should not return items that have a quantity of 0" do
+          i.quantity = 0
+          expect{ i.save }.to_not change{ FarmStoreItem.in_stock.count }
+        end
+      end
+
+      describe '#out_of_stock' do
+        it "should return items that have a quantity of 0" do
+          i.quantity = 0
+          expect{ i.save }.to change{ FarmStoreItem.out_of_stock.count }.by(1)
+        end
+
+        it "should not return items that have a quantity of greater than 0" do
+          i.quantity = 1
+          expect{ i.save }.to_not change{ FarmStoreItem.out_of_stock.count }
+        end
+      end
+    end
+  end #Class Methods
 end

@@ -74,13 +74,13 @@ ActiveRecord::Schema.define(version: 20150324080440) do
     t.float    "tax_rate"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.float    "quantity"
+    t.integer  "quantity"
   end
 
   create_table "farm_store_order_items", force: :cascade do |t|
     t.integer  "farm_store_order_id"
     t.string   "pricing_key"
-    t.float    "quantity"
+    t.integer  "quantity"
     t.float    "tax_rate"
     t.string   "name"
     t.float    "price"

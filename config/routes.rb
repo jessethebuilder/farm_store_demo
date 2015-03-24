@@ -5,7 +5,14 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  #todo these belong in the engine, but there's some stupid problem
+
   resources :farm_store_order_items
+  resources :farm_store_items
+
+  # mount FarmStore::Engine
+  # resources :farm_store_order_items
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

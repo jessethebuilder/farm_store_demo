@@ -6,19 +6,7 @@ describe FarmStoreOrderItem, :type => :model do
   let(:order_item){ i.build_order_item(i.pricing.keys.first) }
 
   describe 'Validations' do
-    describe '#quantity validations' do
-      it 'should not validate if #item.quantity is less than farm_store_order_item["pricing"]["quantity"]' do
-        i.quantity = 1
-        i.save
-
-        #set order_item quantity to beyond the Item's #quantity (total quantity)
-        order_item['pricing'] = {:quantity => 2}
-        order_item.valid?.should == false
-        order_item.errors[:quantity].messages.should.include?("is greater than current stock of #{i.quantity}")
-      end
-    end
-
-  end
+  end # Validations
 
   describe 'Associations' do
     it{ should belong_to :farm_store_order }
@@ -62,14 +50,11 @@ describe FarmStoreOrderItem, :type => :model do
         order_item = item.build_order_item 'test_price'
         order_item.total_after_tax.should == 1100
       end
-
-
     end
   end #Methods
 
   describe 'Class Methods' do
-    describe '#build_from_hash(h)' do
-      #todo
+    describe 'Scopes' do
     end
   end #Class Methods
 end
