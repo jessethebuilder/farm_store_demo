@@ -37,7 +37,7 @@ describe ApplicationController, type: :controller do
         #current_order is generally called when an item is added, so calling current_order creates it, if it doesn't exist.
         order = subject.current_order
         @user.farm_store_orders.open.first.should == order
-        subject.current_order.items.blank?.should == true
+        subject.current_order.farm_store_order_items.blank?.should == true
       end
 
       it 'should return the "open" order, if it exists' do
@@ -50,7 +50,7 @@ describe ApplicationController, type: :controller do
     context 'User is not signed in' do
       it 'should return a new (but saved) FarmStoreOrder, if not open order is available on the session' do
         expect{subject.current_order}.to change{ FarmStoreOrder.open.count }.by(1)
-        subject.current_order.items.blank?.should == true
+        subject.current_order.farm_store_order_items.blank?.should == true
       end
 
       it 'should return an existing FarmStoreOrder, if one has been associated with the session' do

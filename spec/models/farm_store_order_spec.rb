@@ -13,6 +13,7 @@ describe FarmStoreOrder, :type => :model do
 
   describe 'Associations' do
     it{ should belong_to :makes_orders }
+    it{ should have_many :farm_store_order_items }
   end
   
   describe 'Attributes' do
@@ -24,30 +25,30 @@ describe FarmStoreOrder, :type => :model do
 
     describe '#items' do
       it 'should be an array by default' do
-        FarmStoreOrder.new.items.should == []
+        FarmStoreOrder.new.farm_store_order_items.should == []
       end
 
       it 'should return an array of FarmStoreOrderItems' do
-        o.items << oi
-        o.items.first.class.should == FarmStoreOrderItem
+        o.farm_store_order_items << oi
+        o.farm_store_order_items.first.class.should == FarmStoreOrderItem
       end
 
       it "should return an array of FarmStoreOrderItems after it is saved" do
-        o.items << oi
+        o.farm_store_order_items << oi
         o.save
 
         refetched_order = o.reload
-        refetched_order.items.class == Array
-        refetched_order.items.first.class.should == FarmStoreOrderItem
+        refetched_order.farm_store_order_items.class == Array
+        refetched_order.farm_store_order_items.first.class.should == FarmStoreOrderItem
       end
 
       it 'should accept and save FarmStoreOrderItems' do
         o.save
         order_id = o.id
-        o.items << oi
-        o.items.include?(oi).should == true
+        o.farm_store_order_items << oi
+        o.farm_store_order_items.include?(oi).should == true
         o.save
-        FarmStoreOrder.find(order_id).items.first.item_id.should == i.id
+        FarmStoreOrder.find(order_id).farm_store_order_items.first.farm_store_item_id.should == i.id
       end
 
     end
@@ -62,7 +63,7 @@ describe FarmStoreOrder, :type => :model do
         item.save
 
         10.times do
-          o.items << item.build_order_item('test')
+          o.farm_store_order_items << item.build_order_item('test')
         end
       end
 

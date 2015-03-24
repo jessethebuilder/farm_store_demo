@@ -21,4 +21,8 @@ FactoryGirl.define do
       item.pricing[Faker::Lorem.word] = Random.rand(0.01..100000).round(2)
     end
   end
+
+  factory :farm_store_order_item do
+
+  end
 end

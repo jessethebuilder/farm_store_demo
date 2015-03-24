@@ -44,7 +44,6 @@ describe FarmStoreItem, :type => :model do
       end
 
       specify 'return value should be decorated with this FarmStoreItem' do
-        i.build_order_item(pricing_key).item_id.should == i.id
         i.build_order_item(pricing_key).name.should == i.name
       end
 

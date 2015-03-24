@@ -1,23 +1,16 @@
 require 'rails_helper'
 
 describe FarmStoreOrderItem, :type => :model do
-  #there is no db table for this model.
   let(:i){ create :farm_store_item }
   let(:o){ build :farm_store_order }
   let(:order_item){ i.build_order_item(i.pricing.keys.first) }
 
+  describe 'Associations' do
+    it{ should belong_to :farm_store_order }
+    it{ should belong_to :farm_store_item }
+  end
+
   describe 'Methods' do
-    describe '#item' do
-      it 'returns the item that the FarmStoreOrderItem is derived from' do
-        order_item.item.should == i
-      end
-
-      it 'should return nil if the item has been deleted' do
-        i.destroy
-        order_item.item.should == nil
-      end
-    end
-
     describe '#total' do
       it 'should return the price of the item times the quantity' do
         price = i.pricing.values.first
