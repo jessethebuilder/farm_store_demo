@@ -20,8 +20,13 @@ FactoryGirl.define do
 
     after(:build) do |item, e|
       pricing_key = Faker::Lorem.word
-      item.pricing[pricing_key] = {'price' => Random.rand(0.01..100000).round(2), 'quantity' => Random.rand(0.01..10000).round(2)}
     end
+  end
+
+  factory :farm_store_pricing do
+    name Faker::Lorem.word
+    price Random.rand(0.01..100000)
+    quantity Random.rand(1..10000)
   end
 
   factory :farm_store_order_item do

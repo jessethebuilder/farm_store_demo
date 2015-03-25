@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150324080440) do
+ActiveRecord::Schema.define(version: 20150325041355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,27 +67,41 @@ ActiveRecord::Schema.define(version: 20150324080440) do
     t.datetime "updated_at",          null: false
   end
 
-  create_table "farm_store_items", force: :cascade do |t|
+  create_table "farm_store_department_setters", force: :cascade do |t|
+    t.integer  "farm_store_department_id"
+    t.integer  "farm_store_item_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "farm_store_departments", force: :cascade do |t|
     t.string   "name"
-    t.text     "pricing"
     t.text     "description"
-    t.float    "tax_rate"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "farm_store_items", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.float    "tax_rate"
     t.integer  "quantity"
+    t.string   "quantity_label"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "farm_store_order_items", force: :cascade do |t|
     t.integer  "farm_store_order_id"
-    t.string   "pricing_key"
+    t.integer  "farm_store_item_id"
+    t.integer  "farm_store_pricing_id"
     t.integer  "quantity"
     t.float    "tax_rate"
     t.string   "name"
     t.float    "price"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.integer  "farm_store_item_id"
-    t.string   "quantity_label"
+    t.integer  "pricing_quantity"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
   create_table "farm_store_orders", force: :cascade do |t|
@@ -98,6 +112,21 @@ ActiveRecord::Schema.define(version: 20150324080440) do
     t.text     "shipping_address"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+  end
+
+  create_table "farm_store_pricing_setters", force: :cascade do |t|
+    t.integer  "farm_store_pricing_id"
+    t.integer  "farm_store_item_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  create_table "farm_store_pricings", force: :cascade do |t|
+    t.string   "name"
+    t.float    "price"
+    t.integer  "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "farm_store_profiles", force: :cascade do |t|

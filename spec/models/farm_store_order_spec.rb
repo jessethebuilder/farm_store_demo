@@ -3,8 +3,8 @@ require 'rails_helper'
 describe FarmStoreOrder, :type => :model do
   let(:o){ build :farm_store_order }
   let(:i){ create :farm_store_item}
-  let(:pricing_key){ i.pricing.keys.first }
-  let(:oi){ i.build_order_item(pricing_key, :quantity => Random.rand(1..1000)) }
+  let(:pricing){ create :farm_store_pricing }
+  let(:oi){ i.build_order_item(pricing, :quantity => Random.rand(1..1000)) }
   
   describe 'Validations' do
     it{ should validate_presence_of :phase }
@@ -58,12 +58,12 @@ describe FarmStoreOrder, :type => :model do
     describe 'Total Methods' do
       before(:each) do
         item = FarmStoreItem.new :name => Faker::Commerce.product_name
-        item.pricing['test'] = {'price' => 100}
+        item.farm_store_pricings << build(:farm_store_pricing, :price => 100)
         item.tax_rate = 10
         item.save
 
         10.times do
-          o.farm_store_order_items << item.build_order_item('test')
+          o.farm_store_order_items << item.build_order_item(item.farm_store_pricings.first)
         end
       end
 

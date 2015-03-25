@@ -3,10 +3,10 @@ require 'rails_helper'
 #relies on a controller method called #current_order
 describe FarmStoreOrderItemsController, type: :controller do
   let(:farm_store_item){ create :farm_store_item }
-  let(:pricing_key){ farm_store_item.pricing.keys.first }
-  let(:order_item){ farm_store_item.build_order_item(pricing_key) }
+  let(:pricing){ create :farm_store_pricing }
+  let(:order_item){ farm_store_item.build_order_item(pricing) }
 
-  let(:valid_attributes){ {:farm_store_item_id => farm_store_item.id, :pricing_key => pricing_key, :quantity => Random.rand(1..1000)} }
+  let(:valid_attributes){ {:farm_store_item_id => farm_store_item.id, :farm_store_pricing_id => pricing.id, :quantity => Random.rand(1..1000)} }
   let(:invalid_attributes){ {} }
   let(:valid_session){ {} }
   #
@@ -45,7 +45,8 @@ describe FarmStoreOrderItemsController, type: :controller do
   describe 'PUT #update' do
     context 'With Valid Params' do
       let(:new_item){ build :farm_store_item }
-      let(:new_attributes){ {:item_id => farm_store_item.id, :pricing_key => new_item.pricing.keys.first, :quantity => Random.rand(1..1000)} }
+      let(:pricing){ create :farm_store_pricing }
+      let(:new_attributes){ {:item_id => farm_store_item.id, :farm_store_pricing_id => pricing.id, :quantity => Random.rand(1..1000)} }
       let(:oi){ FarmStoreOrderItem.create! valid_attributes }
 
       before(:each) do
