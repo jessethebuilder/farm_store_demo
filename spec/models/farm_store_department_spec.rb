@@ -8,7 +8,6 @@ describe FarmStoreDepartment, :type => :model do
 
   describe 'Associations' do
     it{ should have_many(:farm_store_department_setters) }
-    it{ should have_many(:farm_store_items).through(:farm_store_department_setters) }
   end
 
 end

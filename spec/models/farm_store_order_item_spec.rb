@@ -28,18 +28,18 @@ describe FarmStoreOrderItem, :type => :model do
       end
 
       it 'should work with real data' do
-        i.farm_store_pricings.first.price = 100
-        i.save
-        oi = i.build_order_item(i.farm_store_pricings.first, :quantity => 10)
+        pricing.price = 100
+        oi = i.build_order_item(pricing, :quantity => 10)
         oi.total.should == 1000
       end
 
       it 'should save the price at the moment of creation, and not be linked to the db object item' do
-        i.farm_store_pricings.first.price = 100
-        i.save
-        oi = i.build_order_item(i.farm_store_pricings.first)
-        i.farm_store_pricings.first.price = 200
+        pricing.price = 100
+        oi = i.build_order_item(pricing)
         oi.total.should == 100
+
+        pricing.price = 200
+        oi.price.should == 100
       end
     end
 
@@ -58,6 +58,12 @@ describe FarmStoreOrderItem, :type => :model do
         order_item = item.build_order_item(item.farm_store_pricings.last)
         order_item.total_after_tax.should == 1100
       end
+    end
+
+    describe '#populate_attributes!' do
+      # Records values from associated records on the OrderItem itself, so if the values in, say, the FarmStoreItem
+      # record changes, the order item is saved with it's original values.
+
     end
   end #Methods
 

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe FarmStoreItemsController, type: :controller do
   let(:pricing){ create :farm_store_pricing }
-  let(:valid_attributes){ {name: Faker::Commerce.product_name, quantity: Random.rand(0.0..1000.0), :farm_store_pricing_id => pricing.id} }
+  let(:valid_attributes){ {name: Faker::Commerce.product_name, quantity: Integer(Random.rand(0.0..1000.0)), :farm_store_pricing_id => pricing.id} }
   let(:invalid_attributes){ {quantity: -1} }
   let(:valid_session){ {} }
 
@@ -71,7 +71,7 @@ describe FarmStoreItemsController, type: :controller do
   end
 
   describe "PUT #update" do
-    let(:new_attributes) { {name: Faker::Commerce.product_name, quantity: Random.rand(0..1000), :farm_store_pricing_id => pricing.id} }
+    let(:new_attributes) { {name: Faker::Commerce.product_name, quantity: Integer(Random.rand(0..1000)), :farm_store_pricing_id => pricing.id} }
     let(:item){ FarmStoreItem.create! valid_attributes }
 
     context "with valid params" do
@@ -110,15 +110,13 @@ describe FarmStoreItemsController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    let(:item){ FarmStoreItem.create! valid_attributes }
-
     it "destroys the requested FarmStoreItem" do
-      expect {
-        delete :destroy, {:id => item.to_param}, valid_session
-      }.to change(FarmStoreItem, :count).by(-1)
+      item = FarmStoreItem.create! valid_attributes
+      expect { delete :destroy, {:id => item.to_param}, valid_session }.to change{ FarmStoreItem.count }.by(-1)
     end
 
     it "redirects to the FarmStoreItem list" do
+      item = FarmStoreItem.create! valid_attributes
       delete :destroy, {:id => item.to_param}, valid_session
       expect(response).to redirect_to(farm_store_items_url)
     end

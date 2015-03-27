@@ -35,6 +35,33 @@ describe FarmStoreOrderItemsController, type: :controller do
         xhr :post, :create, {:farm_store_order_item => valid_attributes}, valid_session
         expect(assigns(:farm_store_order_item)).to be_a(FarmStoreOrderItem)
       end
+
+      it 'should associate the name in the Item with the name in Order Item' do
+        # This is done so if the name of the item changes, the name on the order item doesn't change for the customer,
+        # after the order is completed.
+        xhr :post, :create, {:farm_store_order_item => valid_attributes}, valid_session
+        oi = FarmStoreOrderItem.last
+        item = oi.farm_store_item
+        oi.name.should == item.name
+
+        # Similarity for price
+        oi.price.should == item.farm_store_pricings.first.price
+      end
+
+      specify 'it should not associate price with the item price, if a differnet price is sent as a param' do
+        # This is to deal with the delay between rendering and possible edits to an items price. Here, the price is
+        # set when the page renders. This is generally the way this function should be used in the controller.
+        pricing.price = 100
+        pricing.save
+
+        xhr :post, :create, {:farm_store_order_item => valid_attributes.merge({:price => 1000})}, valid_session
+
+        oi = FarmStoreOrderItem.last
+        oi.price.should_not == oi.farm_store_pricing
+        oi.price.should == 1000
+      end
+
+
     end
 
     context 'without valid params' do

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resource :store
 
-  root 'stores#show'
+  root 'farm_store_items#index'
 
   devise_for :users
 

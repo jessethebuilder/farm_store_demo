@@ -1,0 +1,35 @@
+<div id="farm_store_items">
+  <div class="container">
+    <table class="table table-stripped">
+      <thead>
+        <tr>
+          <th>Name</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+        <% @farm_store_items.each do |i| %>
+          <tr>
+            <td><%= i.name %></td>
+            <td>
+              <ul>
+                <% farm_store_add_to_order_links(i).each do |l| %>
+                  <li><%= l %></li>
+                <% end %>
+              </ul>
+            </td>
+            <td><%= link_to 'delete', i, method: :delete %></td>
+          </tr>
+         <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  $(document).on("farmStoreOrderItemCreated", function(event, order_item){
+    console.log(order_item.name);
+  })
+</script>
