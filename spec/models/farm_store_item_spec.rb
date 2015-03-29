@@ -6,7 +6,6 @@ describe FarmStoreItem, :type => :model do
   
   describe 'Validations' do
     it{ should validate_presence_of :name }
-    # it{ should validate_presence_of  }
 
     it{ should validate_presence_of :quantity }
     it{ should validate_numericality_of(:quantity).is_greater_than_or_equal_to(0) }
@@ -54,6 +53,22 @@ describe FarmStoreItem, :type => :model do
 
       specify 'quantity can be changed with :quantity parameter' do
         i.build_order_item(pricing, :quantity => 100).quantity.should == 100
+      end
+    end
+
+    describe 'available_pricings' do
+      it 'should return an array of FarmStorePricings for which there is available quantity' do
+        i = FarmStoreItem.new(:name => Faker::Commerce.product_name, :quantity => 100)
+        p1 = FarmStorePricing.new(:name => Faker::Lorem.word, :quantity => 1, :price => Random.rand(0.01..10000))
+        p2 = FarmStorePricing.new(:name => Faker::Lorem.word, :quantity => 12, :price => Random.rand(0.01..10000))
+        p3 = FarmStorePricing.new(:name => Faker::Lorem.word, :quantity => 144, :price => Random.rand(0.01..10000))
+        i.farm_store_pricings << [p1, p2, p3]
+        i.save!
+
+        pricings = i.available_pricings
+        pricings.include?(p1).should == true
+        pricings.include?(p2).should == true
+        pricings.include?(p3).should == false
       end
     end
   end # Methods

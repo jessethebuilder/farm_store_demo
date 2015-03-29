@@ -6,7 +6,23 @@ describe FarmStoreOrderItem, :type => :model do
   let(:pricing){ create :farm_store_pricing }
   let(:order_item){ i.build_order_item(pricing) }
 
+  before(:each) do
+    i.farm_store_pricings << pricing
+    i.save!
+  end
+
   describe 'Validations' do
+    it 'will not save if total_quantity exceeds quantity on the associated FarmStoreItem' do
+      i.quantity = 100
+      i.save
+
+      pricing.quantity = 200
+      pricing.save
+
+      oi = i.build_order_item(pricing)
+      oi.valid?.should == false
+      oi.errors[:total_quantity].count.should == 1
+    end
   end # Validations
 
   describe 'Associations' do
@@ -17,10 +33,6 @@ describe FarmStoreOrderItem, :type => :model do
 
   describe 'Methods' do
     describe '#total' do
-      before(:each) do
-        i.farm_store_pricings << pricing
-        i.save!
-      end
 
       it 'should return the price of the item times the quantity' do
         price = i.farm_store_pricings.first.price
@@ -60,11 +72,27 @@ describe FarmStoreOrderItem, :type => :model do
       end
     end
 
-    describe '#populate_attributes!' do
-      # Records values from associated records on the OrderItem itself, so if the values in, say, the FarmStoreItem
-      # record changes, the order item is saved with it's original values.
+    describe '#total_quantity' do
+      # Most pricings will be units like a Dozen or a Gross. #pricing_quatity may have a value like 12 or 144, which
+      # will be multiplied by the quantity of items ordered.
+      it 'should return the product of :quantity and the quantity on the pricing' do
+        i = create :item_with_pricing
+        quantity = Random.rand(1..10000)
+        oi = i.build_order_item(i.farm_store_pricings.first, :quantity => quantity)
+        oi.total_quantity.should == i.farm_store_pricings.first.quantity * quantity
+      end
 
+      it 'should work with real numbers' do
+        i = create(:item_with_pricing)
+        p = i.farm_store_pricings.first
+        p.quantity = 12
+        p.save
+        i.reload
+        oi = i.build_order_item(p, :quantity => 12)
+        oi.total_quantity.should == 144
+      end
     end
+
   end #Methods
 
   describe 'Class Methods' do

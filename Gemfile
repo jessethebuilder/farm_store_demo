@@ -60,17 +60,20 @@ gem 'bootstrap-sass'
 
 gem 'devise'
 
+gem 'bootsy'
+
+gem 'carrierwave'
+gem 'mini_magick'
+
 group :test, :development do
   gem 'faker'
   gem 'rspec-rails'
   gem 'wdm'
   gem 'database_cleaner', '~> 1.0.0rc'
   gem 'timecop'
-
-  # gem 'guard'
+  gem 'poltergeist'
   gem 'win32console'
-
-  gem 'konacha'
+  # gem 'konacha'
 end
 
 group :test do
@@ -78,7 +81,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'capybara'
   gem 'guard-rspec'
-  gem 'selenium-webdriver'
+  # gem 'selenium-webdriver'
   gem 'shoulda'
   gem 'launchy', '~> 2.3.0'
   #gem 'webrat'
@@ -86,7 +89,6 @@ end
 
 group :production do
   gem 'rails_12factor'
-  # gem 'faker'
 end
 
 

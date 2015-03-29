@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   #todo these belong in the engine, but there's some stupid problem
-
+  mount Bootsy::Engine => '/bootsy', as: 'bootsy'
+  resources :farm_store_pricings
   resources :farm_store_order_items
   resources :farm_store_items
 

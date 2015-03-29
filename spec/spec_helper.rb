@@ -8,6 +8,15 @@ require 'database_cleaner'
 require 'support/controller_specs_helper'
 require 'support/request_specs_helper'
 
+require 'capybara/poltergeist'
+
+Capybara.javascript_driver = :poltergeist
+
+# Capybara.register_driver(:poltergeist) do |app|
+#   Capybara::Poltergeist::Driver.new(app, {:phantom_js => 'C:\Program Files\phantomjs'})
+# end
+
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 #Dir[Rails.root.join("spec/**/*.rb")].each {|f| require f}

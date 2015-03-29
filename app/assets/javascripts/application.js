@@ -12,5 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require bootsy
 //= require twitter_express
 //= require_tree .
