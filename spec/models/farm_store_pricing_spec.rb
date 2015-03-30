@@ -15,8 +15,7 @@ describe FarmStorePricing, :type => :model do
   end
 
   describe 'Associations' do
-    it{ should have_many(:farm_store_pricing_setters) }
-    it{ should have_many(:farm_store_items).through(:farm_store_pricing_setters) }
+    it{ should belong_to(:farm_store_item) }
   end
 
   describe 'Attributes' do

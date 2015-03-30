@@ -14,7 +14,7 @@ describe FarmStoreItem, :type => :model do
   describe 'Associations' do
     it{ should have_many :farm_store_order_items }
 
-    it{ should have_many(:farm_store_pricings).through(:farm_store_pricing_setters) }
+    it{ should have_many(:farm_store_pricings) }
 
     it{ should have_many(:farm_store_departments).through(:farm_store_department_setters) }
   end

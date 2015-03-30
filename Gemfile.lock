@@ -1,25 +1,22 @@
-GIT
-  remote: https://github.com/jessethebuilder/TwitterExpress
-  revision: 1f4bf9c31babd66b2154dca18c17794c44481198
+PATH
+  remote: C:/Users/Bucky/Desktop/jesseweb/farm_store
+  specs:
+    farm_store (0.0.2)
+      farm_tools
+      rails (~> 4.2.0)
+
+PATH
+  remote: C:/Users/Bucky/Desktop/jesseweb/farm_tools/farm_tools
+  specs:
+    farm_tools (0.0.3)
+
+PATH
+  remote: C:/Users/Bucky/Desktop/jesseweb/twitterexpress/twitterexpress
   specs:
     twitter_express (0.0.1)
       bootstrap-sass (~> 3.0.3.0)
       rails
       sass-rails (~> 5.0.1)
-
-GIT
-  remote: https://github.com/jessethebuilder/farm_tools
-  revision: a37c3e0260aea99f0d23613b045440d2a7ec6a37
-  specs:
-    farm_tools (0.0.3)
-
-PATH
-  remote: C:/Users/Bucky/Desktop/jesseweb/farm_store
-  specs:
-    farm_store (0.0.2)
-      carrierwave (~> 0.10.0)
-      farm_tools
-      rails (~> 4.2.0)
 
 GEM
   remote: https://rubygems.org/

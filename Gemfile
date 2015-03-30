@@ -47,11 +47,11 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # gem 'farm_store', :git => 'https://github.com/jessethebuilder/farm_store'
 gem 'farm_store', :path => 'C:\Users\Bucky\Desktop\jesseweb\farm_store'
 
-gem 'farm_tools', :git => 'https://github.com/jessethebuilder/farm_tools'
-# gem 'farm_tools', :path => 'C:\Users\Bucky\Desktop\jesseweb\farm_tools\farm_tools'
+# gem 'farm_tools', :git => 'https://github.com/jessethebuilder/farm_tools'
+gem 'farm_tools', :path => 'C:\Users\Bucky\Desktop\jesseweb\farm_tools\farm_tools'
 
-gem 'twitter_express', :git => 'https://github.com/jessethebuilder/TwitterExpress'
-# gem 'twitter_express', :path => 'C:\Users\Bucky\Desktop\jesseweb\twitterexpress\twitterexpress'
+# gem 'twitter_express', :git => 'https://github.com/jessethebuilder/TwitterExpress'
+gem 'twitter_express', :path => 'C:\Users\Bucky\Desktop\jesseweb\twitterexpress\twitterexpress'
 
 # gem 'leaf_farm', :git => 'https://github.com/jessethebuilder/leaf_farm'
 # gem 'leaf_farm', :path => 'C:\Users\Bucky\Desktop\jesseweb\leaf_farm'
@@ -62,7 +62,7 @@ gem 'devise'
 
 gem 'bootsy'
 
-gem 'carrierwave'
+gem 'carrierwave', :branch => 'master'
 gem 'mini_magick'
 
 group :test, :development do

@@ -1,4 +1,4 @@
-<%= form_for @farm_store_item, :multipart => true do |f| %>
+<%= form_for @farm_store_item, html: {:multipart => true} do |f| %>
   <%= error_explanation(@farm_store_item) %>
 
   <div class="row">
@@ -25,19 +25,74 @@
 
   <div class="row">
     <div class="col-sm-6">
-      <%= f.label :description, :class => 'control-label' %>
-      <%= f.bootsy_area :description, class: 'form-control' %>
+      <div class="form-group">
+        <%= f.label :description, :class => 'control-label' %>
+        <%= f.bootsy_area :description, class: 'form-control' %>
+      </div>
     </div><!-- col -->
 
     <div class="col-sm-6">
       <!-- pricing -->
-      <% @farm_store_item.available_pricings.each do |p| -%>
-        <%= render partial: 'farm_store_pricings/form', locals: {:pricing => p} %>
-      <% end %>
+      <%# @farm_store_item.available_pricings.each do |p| -%>
+        <%#= render partial: 'farm_store_pricings/form', locals: {:pricing => p} %>
+      <%# end %>
 
-      <%= render partial: 'farm_store_pricings/form', locals: {:pricing => FarmStorePricing.new} %>
+      <%#= render partial: 'farm_store_pricings/form', locals: {:pricing => FarmStorePricing.new} %>
     </div><!-- col -->
   </div><!-- row -->
 
-  <%= image_select(f, :images, :multiple => true) %><!-- row -->
+  <%#= image_select(f, :images) %><!-- row -->
+  <%#= image_select(f, :images, :multiple => true) %><!-- row -->
+
+  <div class="row">
+    <div class="col-sm-6">
+
+    </div>
+  </div>
+
+  <% @farm_store_item.mountable_images.each_with_index do |img, i| -%>
+    <div class="row">
+      <div class="col-sm-6">
+        <%= image_tag img.image.url %>
+<!-- todo -->
+        <%= hidden_field_tag "mountable_image_cache[#{i}]", :class => 'mountable_image_cache', :val => img.image %>
+      </div><!-- col -->
+      <div class="col-sm-6">
+      </div><!-- col -->
+    </div><!-- row -->
+  <% end -%>
+
+  <%# 1.times do %>
+    <div class="row">
+      <%#= f.fields_for :mountable_images, @farm_store_item.mountable_images.new do |img_fields| %>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <%= f.label :mountable_images, 'Images <small>select many</small>'.html_safe %>
+            <%= f.file_field :mountable_images, :multiple => true %>
+            <%#= img_fields.label :image, 'Add Image', :class => 'control-label' %>
+            <%#= img_fields.file_field :image, :class => 'form-control' %>
+            <%#= img_fields.hidden_field :image_cache %>
+          </div>
+
+          <!--<div class="form-group">-->
+            <!--<%#= img_fields.label :remote_image_url, 'or Paste a URL', :class => 'control-label' %>-->
+            <!--<%#= img_fields.text_field :remote_image_url, class: 'form-control' %>-->
+          <!--</div>-->
+        <!--</div>&lt;!&ndash; col &ndash;&gt;-->
+        <div class="col-sm-6"></div><!-- col -->
+      <%# end %>
+    </div><!-- row -->
+  <%# end %>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <%= f.submit class: 'btn btn-primary' %>
+      </div>
+    </div>
+  </div><!-- row -->
 <% end %>
+
+<script>
+
+</script>

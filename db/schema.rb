@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150325041355) do
+ActiveRecord::Schema.define(version: 20150329080553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,19 +114,13 @@ ActiveRecord::Schema.define(version: 20150325041355) do
     t.datetime "updated_at",        null: false
   end
 
-  create_table "farm_store_pricing_setters", force: :cascade do |t|
-    t.integer  "farm_store_pricing_id"
-    t.integer  "farm_store_item_id"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-  end
-
   create_table "farm_store_pricings", force: :cascade do |t|
     t.string   "name"
     t.float    "price"
     t.integer  "quantity"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "farm_store_item_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   create_table "farm_store_profiles", force: :cascade do |t|
@@ -135,6 +129,16 @@ ActiveRecord::Schema.define(version: 20150325041355) do
     t.string   "has_farm_store_profile_type"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+  end
+
+  create_table "mountable_images", force: :cascade do |t|
+    t.string   "image"
+    t.string   "label"
+    t.text     "description"
+    t.integer  "has_mountable_images_id"
+    t.string   "has_mountable_images_type"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "news_stories", force: :cascade do |t|
