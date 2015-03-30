@@ -24,65 +24,68 @@
   </div><!-- row -->
 
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-12">
       <div class="form-group">
         <%= f.label :description, :class => 'control-label' %>
         <%= f.bootsy_area :description, class: 'form-control' %>
       </div>
     </div><!-- col -->
-
-    <div class="col-sm-6">
-      <!-- pricing -->
-      <%# @farm_store_item.available_pricings.each do |p| -%>
-        <%#= render partial: 'farm_store_pricings/form', locals: {:pricing => p} %>
-      <%# end %>
-
-      <%#= render partial: 'farm_store_pricings/form', locals: {:pricing => FarmStorePricing.new} %>
-    </div><!-- col -->
   </div><!-- row -->
 
-  <%#= image_select(f, :images) %><!-- row -->
-  <%#= image_select(f, :images, :multiple => true) %><!-- row -->
+
+  <%= f.file_field :mountable_images_cache, :multiple => true, :class => 'hidden' %>
 
   <div class="row">
     <div class="col-sm-6">
+      <div class="form-group">
+        <%= f.label :mountable_images, 'Images <small>select many</small>'.html_safe %>
+        <%= f.file_field :mountable_images, :multiple => true, class: 'form-control' %>
+      </div>
 
+      <!--<div class="form-group"> todo-->
+        <%#= f.label :remote_mountable_images_urls, 'or Paste URLs <small>separate by commas(,)</small>'.html_safe, :class => 'control-label' %>
+        <%#= f.text_field :remote_mountable_images_urls, class: 'form-control' %>
+      <!--</div>-->
+    </div><!-- col -->
+
+    <div class="col-sm-6">
+      <% @farm_store_item.mountable_images.each do |img| -%>
+        <div class="mountable_image_container">
+          <%= image_tag img.image.url(:thumb) %>
+          <%= link_to('delete', mountable_image_path(img), :method => :delete, :remote => true,
+                      :confirm => 'This will delete this image permanently. Are you sure?',
+                      id: "mountable_image_delete_link_#{img.id}") %>
+        </div>
+      <% end -%>
     </div>
-  </div>
 
-  <% @farm_store_item.mountable_images.each_with_index do |img, i| -%>
-    <div class="row">
-      <div class="col-sm-6">
-        <%= image_tag img.image.url %>
-<!-- todo -->
-        <%= hidden_field_tag "mountable_image_cache[#{i}]", :class => 'mountable_image_cache', :val => img.image %>
-      </div><!-- col -->
-      <div class="col-sm-6">
-      </div><!-- col -->
-    </div><!-- row -->
-  <% end -%>
+  </div><!-- row -->
 
-  <%# 1.times do %>
-    <div class="row">
-      <%#= f.fields_for :mountable_images, @farm_store_item.mountable_images.new do |img_fields| %>
-        <div class="col-sm-6">
+  <div class="row">
+    <div class="col-sm-12 well">
+      <h3>Pricing Options</h3>
+      <%= f.fields_for :farm_store_pricings do |pricing_fields| -%>
+        <div class="form-inline">
           <div class="form-group">
-            <%= f.label :mountable_images, 'Images <small>select many</small>'.html_safe %>
-            <%= f.file_field :mountable_images, :multiple => true %>
-            <%#= img_fields.label :image, 'Add Image', :class => 'control-label' %>
-            <%#= img_fields.file_field :image, :class => 'form-control' %>
-            <%#= img_fields.hidden_field :image_cache %>
+            <%= pricing_fields.label :name, 'Label', :class => 'control-label' %>
+            <%= pricing_fields.text_field :name, :class => 'form-control' %>
           </div>
 
-          <!--<div class="form-group">-->
-            <!--<%#= img_fields.label :remote_image_url, 'or Paste a URL', :class => 'control-label' %>-->
-            <!--<%#= img_fields.text_field :remote_image_url, class: 'form-control' %>-->
-          <!--</div>-->
-        <!--</div>&lt;!&ndash; col &ndash;&gt;-->
-        <div class="col-sm-6"></div><!-- col -->
-      <%# end %>
-    </div><!-- row -->
-  <%# end %>
+          <div class="form-group">
+            <%= pricing_fields.label :quantity, :class => 'control-label' %>
+            <%= pricing_fields.text_field :quantity, :class => 'form-control' %>
+          </div>
+
+          <div class="form-group">
+            <%= pricing_fields.label :price, :class => 'control-label' %>
+            <%= pricing_fields.text_field :price, :class => 'form-control' %>
+          </div>
+        </div>
+      <% end -%>
+    </div><!-- col -->
+    <!--<div class="col-sm-6"></div>&lt;!&ndash; col &ndash;&gt;-->
+    <br><br>
+  </div><!-- row -->
 
   <div class="row">
     <div class="col-sm-12">
@@ -93,6 +96,3 @@
   </div><!-- row -->
 <% end %>
 
-<script>
-
-</script>

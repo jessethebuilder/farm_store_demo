@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   resources :farm_store_pricings
   resources :farm_store_order_items
   resources :farm_store_items
+  resources :mountable_images
 
   # mount FarmStore::Engine
   # resources :farm_store_order_items
