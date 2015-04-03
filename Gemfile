@@ -56,6 +56,8 @@ gem 'twitter_express', :git => 'https://github.com/jessethebuilder/TwitterExpres
 # gem 'leaf_farm', :git => 'https://github.com/jessethebuilder/leaf_farm'
 # gem 'leaf_farm', :path => 'C:\Users\Bucky\Desktop\jesseweb\leaf_farm'
 
+gem 'geocoder'
+
 gem 'bootstrap-sass'
 
 gem 'devise'

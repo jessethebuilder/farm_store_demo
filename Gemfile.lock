@@ -306,6 +306,7 @@ DEPENDENCIES
   faker
   farm_store!
   farm_tools!
+  geocoder
   guard-rspec
   jbuilder (~> 2.0)
   jquery-rails
